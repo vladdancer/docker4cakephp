@@ -2,5 +2,8 @@ include docker.mk
 
 WEB_ROOT=/var/www/html
 
-traefik:
-	docker-compose -f traefik.yml up
+rrun:
+	docker-compose -f traefik.yml up -d
+
+rstop:
+	docker-compose -f traefik.yml stop
