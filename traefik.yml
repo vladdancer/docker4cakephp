@@ -1,0 +1,29 @@
+version: '3.3'
+
+services:
+  traefik:
+    image: traefik:v2.0.0
+    restart: unless-stopped
+    command:
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      #- "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web-secure.address=:443"
+      - "--configFile=./traefik.config.toml"
+    networks:
+      - app1
+    ports:
+      - '80:80'
+      - "443:443"
+      #- '8080:8080'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - "/root/certs/:/certs/"
+
+networks:
+  app1:
+    external:
+      name: dev1_app_default

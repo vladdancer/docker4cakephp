@@ -1,0 +1,20 @@
+include fastcgi.conf;
+
+index index.php index.html;
+
+location / {
+    try_files $uri @cake4;
+}
+
+location @cake4 {
+    include fastcgi.conf;
+    fastcgi_param QUERY_STRING $query_string;
+    fastcgi_param SCRIPT_NAME /index.php;
+    fastcgi_param SCRIPT_FILENAME $document_root/index.php;
+    fastcgi_pass php;
+    track_uploads {{ getenv "NGINX_TRACK_UPLOADS" "uploads 60s" }};
+}
+
+location = /index.php {
+    fastcgi_pass php;
+}
